@@ -37,7 +37,7 @@ BLHandler::~BLHandler()
 
 void BLHandler::setup(String name_, bool isMaster_)
 {
-    SerialBT.begin(BLUETOOTH_NAME, !isMaster_);
+    SerialBT.begin(name_, !isMaster_);
     connected = SerialBT.connect(address);
 
     // Serial.println(connected ? "Connected Successfully!" : SerialBT.connected(10000) ? "" : "Failed to connect. Make sure remote device is available and in range, then restart app.");

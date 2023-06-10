@@ -3,7 +3,7 @@
 
 #include "Bluetooth/BLHandler.h"
 
-BLHandler BLtooth(MACadd, BLUETOOTH_NAME, (char*)BLUETOOTH_PIN);
+BLHandler bluetooth(MACadd, BLUETOOTH_NAME, (char*)BLUETOOTH_PIN);
 
 /*
 Components:
@@ -15,7 +15,7 @@ Components:
 
 void setup()
 {
-
+    bluetooth.setup(BLUETOOTH_NAME, true);
 }
 
 void loop()
