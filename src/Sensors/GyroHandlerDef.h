@@ -1,0 +1,53 @@
+#pragma once
+
+#include <sdkconfig.h>
+
+#ifdef ARDUINO_ARCH_ESP32
+    #include "esp32-hal-log.h"
+#endif
+
+#ifndef CONFIG_SENS_ACQUISITION_LOG_TAG
+#define CONFIG_SENS_ACQUISITION_LOG_TAG                  "SensorAcquisition"
+#endif /* CONFIG_SENS_ACQUISITION_LOG_TAG */
+#define SENSORACQTAG CONFIG_SENS_ACQUISITION_LOG_TAG
+
+#ifndef CONFIG_SENS_ACQUISITION_TASK_PRIO
+#define CONFIG_SENS_ACQUISITION_TASK_PRIO                8               // default priority 8
+#endif  /* CONFIG_SENS_ACQUISITION_TASK_PRIO */
+
+#ifndef CONFIG_SENS_ACQUISITION_TASK_NAME
+#define CONFIG_SENS_ACQUISITION_TASK_NAME                "SensAcquisitionTask"
+#endif /* CONFIG_SENS_ACQUISITION_TASK_NAME */
+
+#ifndef CONFIG_SENS_ACQUISITION_TASK_STACK
+#define CONFIG_SENS_ACQUISITION_TASK_STACK               (4096)          // 4KB stack memory alloc
+#endif /* CONFIG_SENS_ACQUISITION_TASK_STACK */
+
+#ifndef CONFIG_SENS_ACQUISITION_TIMER_NAME
+#define CONFIG_SENS_ACQUISITION_TIMER_NAME               "SensAcqTMR"  // default timer name
+#endif /* CONFIG_SENS_ACQUISITION_TIMER_NAME */
+#define SENSORACQ_TMR_NAME CONFIG_SENS_ACQUISITION_TIMER_NAME
+
+#ifndef CONFIG_SENS_ACQUISITION_I2C_FREQ
+#define CONFIG_SENS_ACQUISITION_I2C_FREQ                 (400 * 1000UL)  // default I2C Fast Mode
+#endif /* CONFIG_SENS_ACQUISITION_I2C_FREQ */
+
+#ifndef CONFIG_SENS_ACQUISITION_SDA_PIN
+#define CONFIG_SENS_ACQUISITION_SDA_PIN                  (13)            // IO3 according to schematic
+#endif /* CONFIG_SENS_ACQUISITION_SDA_PIN */
+
+#ifndef CONFIG_SENS_ACQUISITION_SCL_PIN
+#define CONFIG_SENS_ACQUISITION_SCL_PIN                  (15)            // IO15 according to schematic
+#endif /* CONFIG_SENS_ACQUISITION_SCL_PIN */
+
+#ifndef CONFIG_SENS_ACQUISITION_INTR_PIN
+#define CONFIG_SENS_ACQUISITION_INTR_PIN                 (12)            // Intterupt pin GPIO
+#endif /* CONFIG_SENS_ACQUISITION_INTR_PIN */
+
+#ifndef CONFIG_SENS_ACQUISITION_MAX_STREAM_BUFF_LEN
+#define CONFIG_SENS_ACQUISITION_MAX_STREAM_BUFF_LEN      (25 * 1024)    // default max 25KB for sensor data buffer
+#endif /* CONFIG_SENS_ACQUISITION_MAX_STREAM_BUFF_LEN */
+
+#ifndef CONFIG_SENS_ACQUISITION_MAX_DFT_BUFF_LEN
+#define CONFIG_SENS_ACQUISITION_MAX_STREAM_DFT_LEN       (32 * 1024)    // default max 32KB for dft buffer size
+#endif /* CONFIG_SENS_ACQUISITION_MAX_STREAM_DFT_LEN */
