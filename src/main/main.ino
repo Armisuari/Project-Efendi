@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#include "AppConfig.h"
+// #include "AppConfig.h"
 #include "Bluetooth/BLHandler.h"
 // #include "Sensors/GyroHandler.h"
 
