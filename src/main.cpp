@@ -3,7 +3,7 @@
 
 #include "AppConfig.h"
 #include "Bluetooth/BLHandler.h"
-#include "Sensors/GyroHandler.h"
+// #include "Sensors/GyroHandler.h"
 
 BLHandler bluetooth(MACadd, BLUETOOTH_NAME, (char*)BLUETOOTH_PIN);
 
@@ -19,8 +19,9 @@ Components:
 void setup()
 {
     Serial.begin(115200);
-    bluetooth.setup(BLUETOOTH_NAME, true);
-    GyroHandler_t gyro::setup(true);
+    // bluetooth.setup(BLUETOOTH_NAME, true); //when the device as master to anothe devices
+    bluetooth.setup(BLUETOOTH_NAME); //when device as client (example when communicate with android BT)
+    // GyroHandler_t gyro::setup(true);
 }
 
 void loop()

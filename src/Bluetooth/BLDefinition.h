@@ -2,6 +2,10 @@
 
 #include <sdkconfig.h>
 
+#ifdef ARDUINO_ARCH_ESP32
+    #include "esp32-hal-log.h"
+#endif
+
 #ifndef CONFIG_BL_HANDLER_LOG_TAG
 #define CONFIG_BL_HANDLER_LOG_TAG                 "BLHANDLER"
 #endif /* CONFIG_BL_HANDLER_LOG_TAG */
