@@ -25,6 +25,7 @@ public:
 
     bool received = false; // Status penerimaan data
     void setup(String name_, bool isMaster_);
+    void setup(String name_);
 };
 
 // Implementasi konstruktor BLHandler
@@ -41,14 +42,63 @@ BLHandler::~BLHandler()
 // Fungsi setup untuk mengatur koneksi Bluetooth
 void BLHandler::setup(String name_, bool isMaster_)
 {
-    SerialBT.begin(name_, !isMaster_);          // Memulai koneksi Bluetooth dengan nama dan mode master/slave
+    SerialBT.begin(name_, isMaster_);           // Memulai koneksi Bluetooth dengan nama dan mode master/slave
     bool connected = SerialBT.connect(address); // Mencoba melakukan koneksi ke alamat Bluetooth
 
+    // Serial.println(F("The device started in master mode, make sure remote BT device is on!"));
+    ESP_LOGD(BLHANDLERTAG, "The device started in master mode, make sure remote BT device is on!");
+
     // Menampilkan pesan tergantung apakah koneksi berhasil atau tidak
-    ESP_LOGD(BLHANDLERTAG, connected ? F("Connected Successfully!") : SerialBT.connected(10000) ? ""
-                                                                                                : F("Failed to connect. Make sure remote device is available and in range, then restart app."));
+    // ESP_LOGD(BLHANDLERTAG, connected ? F("Connected Successfully!") : SerialBT.connected(10000) ? "": F("Failed to connect. Make sure remote device is available and in range, then restart app."));
+
+    if (connected)
+    {
+        ESP_LOGD(BLHANDLERTAG, "Connected Successfully!");
+    }
+    else
+    {
+        while (!SerialBT.connected(10000))
+        {
+            ESP_LOGE(BLHANDLERTAG, "Failed to connect. Make sure remote device is available and in range, then restart app.");
+        }
+    }
+
     if (SerialBT.disconnect()) // Mencoba memutuskan koneksi Bluetooth
-        ESP_LOGD(BLHANDLERTAG, F("Disconnected Successfully!"));
+    ESP_LOGD(BLHANDLERTAG, "Disconnected Successfully!");
+
+    xTaskCreate(&BLHandler::_staticTaskFunc, // Membuat tugas Bluetooth
+                CONFIG_BL_HANDLER_TASK_NAME,
+                CONFIG_BL_HANDLER_TASK_STACK,
+                this,
+                CONFIG_BL_HANDLER_TASK_PRIO,
+                &_taskHandle);
+}
+
+void BLHandler::setup(String name_)
+{
+    SerialBT.begin(name_);           // Memulai koneksi Bluetooth dengan nama dan mode master/slave
+    bool connected = SerialBT.connect(address); // Mencoba melakukan koneksi ke alamat Bluetooth
+
+    // Serial.println(F("The device started in master mode, make sure remote BT device is on!"));
+    ESP_LOGD(BLHANDLERTAG, "The device started in master mode, make sure remote BT device is on!");
+
+    // Menampilkan pesan tergantung apakah koneksi berhasil atau tidak
+    // ESP_LOGD(BLHANDLERTAG, connected ? F("Connected Successfully!") : SerialBT.connected(10000) ? "": F("Failed to connect. Make sure remote device is available and in range, then restart app."));
+
+    if (connected)
+    {
+        ESP_LOGD(BLHANDLERTAG, "Connected Successfully!");
+    }
+    else
+    {
+        while (!SerialBT.connected(10000))
+        {
+            ESP_LOGE(BLHANDLERTAG, "Failed to connect. Make sure remote device is available and in range, then restart app.");
+        }
+    }
+
+    if (SerialBT.disconnect()) // Mencoba memutuskan koneksi Bluetooth
+    ESP_LOGD(BLHANDLERTAG, "Disconnected Successfully!");
 
     xTaskCreate(&BLHandler::_staticTaskFunc, // Membuat tugas Bluetooth
                 CONFIG_BL_HANDLER_TASK_NAME,
@@ -67,7 +117,7 @@ void BLHandler::setup(String name_, bool isMaster_)
 // Fungsi tugas sebenarnya untuk mengambil data dari Bluetooth
 void BLHandler::_taskFunc()
 {
-    ESP_LOGD(BLHANDLERTAG, F("Bluetooth Handler Task Started"));
+    ESP_LOGD(BLHANDLERTAG, "Bluetooth Handler Task Started");
 
     while (1)
     {
@@ -78,7 +128,7 @@ void BLHandler::_taskFunc()
             if (Databluetooth == '1') // Memeriksa apakah data yang diterima adalah '1'
             {
                 ESP_LOGD(BLHANDLERTAG, "Data Bluetooth: %d", Databluetooth);
-                ESP_LOGD(BLHANDLERTAG, F("masukkkk coyyyyyyyyyyyyyyyyyyyyyyyy"));
+                ESP_LOGD(BLHANDLERTAG, "masukkkk coyyyyyyyyyyyyyyyyyyyyyyyy");
 
                 received = true; // Mengatur status penerimaan data menjadi benar
             }
